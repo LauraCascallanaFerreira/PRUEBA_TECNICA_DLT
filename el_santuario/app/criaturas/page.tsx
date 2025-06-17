@@ -5,12 +5,17 @@ import { redirect } from "next/navigation";
 import styles from "./page.module.scss";
 import Image from "next/image";
 import Link from "next/link";
+import type { Creature } from "@prisma/client";
 
-export default async function Creatures({
-    searchParams,
-}: {
+type Props = {
     searchParams?: { [key: string]: string | string[] };
-}) {
+};
+
+export default function CreaturesWrapper(props: Props) {
+    return <Content {...props} />;
+}
+
+async function Content({ searchParams }: Props) {
     const session = await getServerSession(authOptions);
     if (!session) redirect("/auth/login");
 
@@ -33,7 +38,6 @@ export default async function Creatures({
             : [];
 
     const tiposFiltrados = tiposSeleccionados.filter(isCreatureType);
-
     const nombreBusqueda = Array.isArray(rawNombre) ? rawNombre[0] : rawNombre;
 
     const nameFilter = nombreBusqueda
@@ -43,7 +47,9 @@ export default async function Creatures({
     const creatures = await prisma.creature.findMany({
         where: {
             userId: session.user.id,
-            ...(tiposFiltrados.length > 0 && { type: { in: tiposFiltrados as CreatureType[] } }),
+            ...(tiposFiltrados.length > 0 && {
+                type: { in: tiposFiltrados as CreatureType[] },
+            }),
             ...(nameFilter && { name: nameFilter }),
         },
         orderBy: { createdAt: "desc" },
@@ -129,13 +135,7 @@ export default async function Creatures({
                                 </tr>
                             </thead>
                             <tbody>
-                                {creatures.map((criatura: {
-                                    id: string;
-                                    name: string;
-                                    type: string;
-                                    power: number;
-                                    trained: boolean;
-                                }) => (
+                                {creatures.map((criatura: Creature) => (
                                     <tr key={criatura.id}>
                                         <td>{criatura.name}</td>
                                         <td>{formatearTipo(criatura.type)}</td>
