@@ -7,17 +7,12 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Creature } from "@prisma/client";
 
-interface SearchParams {
-    searchParams?: {
-        [key: string]: string | string[] | undefined;
-    };
-}
 
-export default function CreaturesPage({ searchParams }: SearchParams) {
-    return <Content searchParams={searchParams} />;
-}
+type Props = {
+    searchParams?: { [key: string]: string | string[] | undefined };
+};
 
-async function Content({ searchParams }: SearchParams) {
+export default async function CreaturesPage({ searchParams }: Props) {
     const session = await getServerSession(authOptions);
     if (!session) redirect("/auth/login");
 
