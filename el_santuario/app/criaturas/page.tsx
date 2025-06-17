@@ -7,19 +7,16 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Creature } from "@prisma/client";
 
-// 👇 definimos el tipo correcto para los props
 interface SearchParams {
     searchParams?: {
         [key: string]: string | string[] | undefined;
     };
 }
 
-// 👇 este componente es el único "default" (no puede ser async)
 export default function CreaturesPage({ searchParams }: SearchParams) {
     return <Content searchParams={searchParams} />;
 }
 
-// 👇 esta sí puede ser async, y tiene toda la lógica
 async function Content({ searchParams }: SearchParams) {
     const session = await getServerSession(authOptions);
     if (!session) redirect("/auth/login");
