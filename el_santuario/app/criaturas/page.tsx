@@ -10,7 +10,7 @@ import { Prisma } from "@prisma/client";
 export default async function Creatures({
     searchParams,
 }: {
-    searchParams?: Record<string, string | string[] | undefined>;
+    searchParams?: Record<string, string | string[]>;
 }) {
     const session = await getServerSession(authOptions);
     if (!session) redirect("/auth/login");
