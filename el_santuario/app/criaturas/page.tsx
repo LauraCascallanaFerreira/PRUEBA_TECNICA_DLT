@@ -5,12 +5,11 @@ import { redirect } from "next/navigation";
 import styles from "./page.module.scss";
 import Image from "next/image";
 import Link from "next/link";
-import { Prisma } from "@prisma/client";
 
 export default async function Creatures({
     searchParams,
 }: {
-    searchParams?: Record<string, string | string[]>;
+    searchParams?: { [key: string]: string | string[] };
 }) {
     const session = await getServerSession(authOptions);
     if (!session) redirect("/auth/login");
@@ -37,7 +36,7 @@ export default async function Creatures({
 
     const nombreBusqueda = Array.isArray(rawNombre) ? rawNombre[0] : rawNombre;
 
-    const nameFilter: Prisma.StringFilter | undefined = nombreBusqueda
+    const nameFilter = nombreBusqueda
         ? { contains: nombreBusqueda }
         : undefined;
 
@@ -130,7 +129,13 @@ export default async function Creatures({
                                 </tr>
                             </thead>
                             <tbody>
-                                {creatures.map((criatura) => (
+                                {creatures.map((criatura: {
+                                    id: string;
+                                    name: string;
+                                    type: string;
+                                    power: number;
+                                    trained: boolean;
+                                }) => (
                                     <tr key={criatura.id}>
                                         <td>{criatura.name}</td>
                                         <td>{formatearTipo(criatura.type)}</td>
