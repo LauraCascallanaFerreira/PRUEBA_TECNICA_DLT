@@ -1,0 +1,162 @@
+.page {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  position: relative;
+  width: 400px;
+  flex-shrink: 0;
+  height: 100vh;
+}
+
+.img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.main {
+  flex: 1;
+  padding: 2rem 4rem;
+  overflow-y: auto;
+}
+
+.nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 2rem;
+  font-family: 'Sedan', serif;
+  margin-bottom: 2rem;
+}
+
+.enlace {
+  text-decoration: none;
+  color: #222;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.activo {
+  background: #f2ebff;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.5rem;
+}
+
+.titulo {
+  font-family: 'Sedan SC', serif;
+  font-size: 2rem;
+  color: #C77E01;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+
+.subtitulo {
+  font-family: 'Sedan SC', serif;
+  font-size: 1.5rem;
+  color: #C77E01;
+  text-transform: capitalize;
+  margin-bottom: 1rem;
+}
+
+.descripcion {
+  font-family: 'Sedan', serif;
+  color: #777;
+  margin-bottom: 2rem;
+}
+
+.formulario {
+  font-family: 'Sedan', serif;
+  max-width: 700px;
+}
+
+.subtituloFormulario {
+  font-family: 'Sedan SC', serif;
+  font-size: 1.3rem;
+  color: #C77E01;
+  margin-bottom: 2rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.fila {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  align-items: flex-end;
+}
+
+.campo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  label {
+    color: #9C5CE1;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+  }
+
+  input,
+  select {
+    width: 100%;
+    background: #eee;
+    border: none;
+    border-radius: 1rem;
+    padding: 0.8rem;
+    font-family: 'Sedan', serif;
+    font-size: 1rem;
+    color: #222;
+  }
+}
+
+.campoCheckbox {
+  flex: 1;
+
+  label {
+    display: block;
+    color: #9C5CE1;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .opciones {
+    display: flex;
+    gap: 2rem;
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #222;
+      text-transform: none;
+    }
+  }
+}
+
+.boton {
+  display: block;
+  margin: 0 auto;
+  background: #9C5CE1;
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  font-family: 'Sedan SC', serif;
+  font-size: 1rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background: #803ac5;
+  }
+}
