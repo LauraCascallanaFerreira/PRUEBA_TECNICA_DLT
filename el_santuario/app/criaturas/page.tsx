@@ -10,7 +10,7 @@ import { Prisma } from "@prisma/client";
 export default async function Creatures({
     searchParams,
 }: {
-    searchParams?: { [key: string]: string | string[] | undefined };
+    searchParams: { [key: string]: string | string[] | undefined };
 }) {
     const session = await getServerSession(authOptions);
     if (!session) redirect("/auth/login");
@@ -24,17 +24,18 @@ export default async function Creatures({
         return validTypes.includes(tipo as CreatureType);
     }
 
-    const tipoParam = searchParams?.tipo;
-    const tiposSeleccionados: string[] = Array.isArray(tipoParam)
-        ? tipoParam
-        : tipoParam
-            ? [tipoParam]
+    const rawTipo = searchParams.tipo;
+    const rawNombre = searchParams.nombre;
+
+    const tiposSeleccionados: string[] = Array.isArray(rawTipo)
+        ? rawTipo
+        : rawTipo
+            ? [rawTipo]
             : [];
 
     const tiposFiltrados = tiposSeleccionados.filter(isCreatureType);
 
-    const nombreParam = searchParams?.nombre;
-    const nombreBusqueda = Array.isArray(nombreParam) ? nombreParam[0] : nombreParam;
+    const nombreBusqueda = Array.isArray(rawNombre) ? rawNombre[0] : rawNombre;
 
     const nameFilter: Prisma.StringFilter | undefined = nombreBusqueda
         ? { contains: nombreBusqueda }
@@ -102,7 +103,6 @@ export default async function Creatures({
                     </aside>
 
                     <section className={styles.tabla}>
-                        {/* Búsqueda por nombre colocada encima de la tabla */}
                         <form method="GET" className={styles.formBusqueda}>
                             {tiposFiltrados.map(tipo => (
                                 <input type="hidden" name="tipo" value={tipo} key={tipo} />
@@ -159,8 +159,6 @@ export default async function Creatures({
             </main>
         </div>
     );
-
-
 }
 
 function formatearTipo(tipo: string) {

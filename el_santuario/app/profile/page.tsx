@@ -21,6 +21,10 @@ export default async function Profile() {
 
   const master = user.role === "MAESTRO";
 
+  const totalCriaturas = master
+    ? await prisma.creature.count()
+    : null;
+
   return (
     <div className={styles.perfilContainer}>
       <aside className={styles.imagen}>
@@ -61,6 +65,15 @@ export default async function Profile() {
           <label>Rol</label>
           <input disabled value={master ? "Maestro" : "Cuidador"} />
         </div>
+
+        {master && (
+          <div className={styles.seccionMaestro}>
+            <h3 className={styles.tituloMaestro}>Información exclusiva para Maestros</h3>
+            <p className={styles.textoMaestro}>
+              Total de criaturas creadas en el santuario: <strong>{totalCriaturas}</strong>
+            </p>
+          </div>
+        )}
       </main>
     </div>
   );
