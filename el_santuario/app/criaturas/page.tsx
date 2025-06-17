@@ -10,7 +10,7 @@ import { Prisma } from "@prisma/client";
 export default async function Creatures({
     searchParams,
 }: {
-    searchParams: { [key: string]: string | string[] | undefined };
+    searchParams?: Record<string, string | string[] | undefined>;
 }) {
     const session = await getServerSession(authOptions);
     if (!session) redirect("/auth/login");
@@ -24,8 +24,8 @@ export default async function Creatures({
         return validTypes.includes(tipo as CreatureType);
     }
 
-    const rawTipo = searchParams.tipo;
-    const rawNombre = searchParams.nombre;
+    const rawTipo = searchParams?.tipo;
+    const rawNombre = searchParams?.nombre;
 
     const tiposSeleccionados: string[] = Array.isArray(rawTipo)
         ? rawTipo
