@@ -45,7 +45,12 @@ export async function POST(req: Request) {
 
     return NextResponse.redirect(new URL("/criaturas", req.url));
   } catch (error: unknown) {
-    console.error("Error al crear criatura:", error.message, error);
-    return NextResponse.json({ error: error.message || "Error interno del servidor" }, { status: 500 });
+    if (error instanceof Error) {
+      console.error("Error al crear criatura:", error.message, error);
+      return NextResponse.json({ error: error.message || "Error interno del servidor" }, { status: 500 });
+    } else {
+      console.error("Error desconocido al crear criatura:", error);
+      return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
+    }
   }
 }
