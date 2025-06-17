@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
-export async function POST(req: Request, { params }: { params: { id: string } }) {
+export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
@@ -17,7 +17,9 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     );
   }
 
-  const creatureId = params.id;
+  const url = new URL(req.url);
+  const segments = url.pathname.split("/");
+  const creatureId = segments[segments.indexOf("criaturas") + 1];
 
   try {
     await prisma.creature.delete({
