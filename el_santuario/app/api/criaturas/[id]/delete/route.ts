@@ -3,18 +3,14 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
-interface Params {
-    params: {id: string};
-}
-
-export async function POST(req: Request, {params}: Params) {
+export async function POST(req: Request, context: { params: { id: string }}) {
     const session = await getServerSession(authOptions);
 
     if(!session) return NextResponse.json({error: "No autenticado"}, {status: 401});
 
     if(session.user.role !== "MAESTRO") return NextResponse.json({error: "No autorizado para eliminar una criatura"}, {status: 403});
 
-    const creatureId = params.id;
+    const creatureId = context.params.id;
 
     try {
         await prisma.creature.delete({
