@@ -7,15 +7,20 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Creature } from "@prisma/client";
 
-type Props = {
-    searchParams?: { [key: string]: string | string[] };
-};
-
-export default function CreaturesWrapper(props: Props) {
-    return <Content {...props} />;
+// 👇 definimos el tipo correcto para los props
+interface SearchParams {
+    searchParams?: {
+        [key: string]: string | string[] | undefined;
+    };
 }
 
-async function Content({ searchParams }: Props) {
+// 👇 este componente es el único "default" (no puede ser async)
+export default function CreaturesPage({ searchParams }: SearchParams) {
+    return <Content searchParams={searchParams} />;
+}
+
+// 👇 esta sí puede ser async, y tiene toda la lógica
+async function Content({ searchParams }: SearchParams) {
     const session = await getServerSession(authOptions);
     if (!session) redirect("/auth/login");
 
@@ -47,9 +52,7 @@ async function Content({ searchParams }: Props) {
     const creatures = await prisma.creature.findMany({
         where: {
             userId: session.user.id,
-            ...(tiposFiltrados.length > 0 && {
-                type: { in: tiposFiltrados as CreatureType[] },
-            }),
+            ...(tiposFiltrados.length > 0 && { type: { in: tiposFiltrados as CreatureType[] } }),
             ...(nameFilter && { name: nameFilter }),
         },
         orderBy: { createdAt: "desc" },
@@ -109,7 +112,7 @@ async function Content({ searchParams }: Props) {
 
                     <section className={styles.tabla}>
                         <form method="GET" className={styles.formBusqueda}>
-                            {tiposFiltrados.map(tipo => (
+                            {tiposFiltrados.map((tipo) => (
                                 <input type="hidden" name="tipo" value={tipo} key={tipo} />
                             ))}
                             <div className={styles.busqueda}>
